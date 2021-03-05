@@ -30,6 +30,5 @@ main :: () {
     // }
     // if truth() {}
     // if !!true {}
-    // if true && true || true && true && true && true {}
-    // if true && true || true == true && truth() {}
+    // if true != true || true == true && truth() {}
 }

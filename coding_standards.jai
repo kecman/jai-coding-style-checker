@@ -29,7 +29,7 @@ cloudnc_style_checks :: (message: *Message) {
 style_check_return :: (node : *Code_Return) {
     for arg : node.arguments_unsorted {
         if arg.expression.kind == .PROCEDURE_CALL {
-            report_cloudnc_error(node, "Procedure call in return value");
+            report_cloudnc_error(node, "Procedure calls in returns are not allowed");
         }
     }
 }
@@ -73,7 +73,7 @@ style_check_if_condition :: (node : *Code_Node) -> (reason : string, error_node 
 
             if_condition_binary_operator_count += 1;
             if if_condition_binary_operator_count >= 4 {
-                return "Exceeded maximum binary operator count (4) in if condition", node; 
+                return "Exceeded maximum binary operator count (3) in if condition", node;
             }
 
             lhs_reason, lhs_error := style_check_if_condition(op.left);
