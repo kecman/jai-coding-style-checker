@@ -1,5 +1,3 @@
-// https://gitlab.cloudnc.in/matija/jai-coding-standards-demo
-
 #import "Basic";
 
 truth :: () -> bool { return true; }
