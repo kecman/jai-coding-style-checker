@@ -25,9 +25,11 @@ main :: () {
     // DISALLOWED code
     //
 
-    // bad_function_call :: () -> bool { return truth(); }
+    // bad_function_call :: () -> bool {
+    //     return truth();
+    // }
     // if truth() {}
     // if !!true {}
-    // if true && true && true && true && true && true {}
-    // if true && true && true && true && truth() {}
+    // if true && true || true && true && true && true {}
+    // if true && true || true == true && truth() {}
 }
