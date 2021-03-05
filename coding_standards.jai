@@ -7,22 +7,17 @@ cloudnc_style_checks :: (message: *Message) {
         if !contains(decl.filename, "main") continue;
 
         for decl.expressions {
+            // Run the if statement checks
             if it.kind == .IF {
                 style_check_if(xx it);
             }
 
+            // Run the return statement checks
             if it.kind == .RETURN {
                 style_check_return(xx it);
             }
         }
     }
-}
-
-report_cloudnc_error :: (node: *Code_Node, description: string) {
-    error := sprint("\n*** CloudNC coding style violation (%) ***", description);
-    defer free(error.data);
-    compiler_report(error, make_location(node), .ERROR_CONTINUABLE);
-    num_errors_found += 1;
 }
 
 #scope_file
@@ -98,9 +93,9 @@ style_check_if_condition :: (node : *Code_Node) -> (reason : string, error_node 
     return "", null;
 }
 
-print_exp :: (node : *Code_Node) {
-    builder: String_Builder;
-    defer free_buffers(*builder);
-    print_expression(*builder, node);
-    print("print_expression: %, %\n", node.kind, builder_to_string(*builder));
+report_cloudnc_error :: (node: *Code_Node, description: string) {
+    error := sprint("\n*** CloudNC coding style violation (%) ***", description);
+    defer free(error.data);
+    compiler_report(error, make_location(node), .ERROR_CONTINUABLE);
+    num_errors_found += 1;
 }

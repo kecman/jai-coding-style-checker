@@ -1,3 +1,5 @@
+// https://gitlab.cloudnc.in/matija/jai-coding-standards-demo
+
 #import "Basic";
 
 truth :: () -> bool { return true; }
@@ -13,7 +15,6 @@ main :: () {
         t := truth();
         return t;
     }
-
     if false {}
     if !true {}
     if true && true || true {}
@@ -24,10 +25,7 @@ main :: () {
     // DISALLOWED code
     //
 
-    // bad_function_call :: () -> bool {
-    //     return truth();
-    // }
-
+    // bad_function_call :: () -> bool { return truth(); }
     // if truth() {}
     // if !!true {}
     // if true && true && true && true && true && true {}
