@@ -1,32 +1,18 @@
 #import "Basic";
 
-#load "other.jai";
-
 truth :: () -> bool { return true; }
 lies :: () -> bool { return false; }
 
 main :: () {
 
     //
-    // OK return statements
+    // GOOD code
     //
 
     good_function_call :: () -> bool {
         t := truth();
         return t;
     }
-
-    //
-    // DISALLOWED return statements
-    //
-
-    // bad_function_call :: () -> bool {
-    //     return truth();
-    // }
-
-    //
-    // OK if statements
-    //
 
     if false {}
     if !true {}
@@ -35,8 +21,12 @@ main :: () {
     if "hello" {}
 
     //
-    // DISALLOWED if statements
+    // DISALLOWED code
     //
+
+    // bad_function_call :: () -> bool {
+    //     return truth();
+    // }
 
     // if truth() {}
     // if !!true {}

@@ -4,7 +4,7 @@ cloudnc_style_checks :: (message: *Message) {
     code := cast(*Message_Typechecked) message;
     
     for decl: code.declarations {
-        if !contains(decl.filename, "target") continue;
+        if !contains(decl.filename, "main") continue;
 
         for decl.expressions {
             if it.kind == .IF {

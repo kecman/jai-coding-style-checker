@@ -9,7 +9,7 @@ build :: () {
     }
 
     target_options := get_build_options(w);
-    target_options.output_executable_name = "target";
+    target_options.output_executable_name = "main";
     set_build_options(target_options, w);
 
     {
