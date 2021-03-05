@@ -76,11 +76,13 @@ style_check_if_condition :: (node : *Code_Node) -> (reason : string, error_node 
                 return "Exceeded maximum binary operator count (3) in if condition", node;
             }
 
+            if_condition_unary_negation_operator_count = 0; // Reset negation counter before checking subexpression
             lhs_reason, lhs_error := style_check_if_condition(op.left);
             if lhs_reason != "" {
                 return lhs_reason, lhs_error;
             }
 
+            if_condition_unary_negation_operator_count = 0; // Reset negation counter before checking subexpression
             rhs_reason, rhs_error := style_check_if_condition(op.right);
             if rhs_reason != "" {
                 return rhs_reason, rhs_error;

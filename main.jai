@@ -14,7 +14,7 @@ main :: () {
         return t;
     }
     if false {}
-    if !true {}
+    if !true || !false{}
     if true && true || true {}
     if 42 {}
     if "hello" {}
@@ -28,5 +28,6 @@ main :: () {
     // }
     // if truth() {}
     // if !!true {}
+    // if !true || !!false{}
     // if true != true || true == true && truth() {}
 }
