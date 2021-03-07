@@ -37,7 +37,7 @@ style_check_declaration :: (decl : *Code_Declaration)
                 header := cast(*Code_Procedure_Header) root_expression;
                 if !is_lower_snake_case(header.name) {
                     reason := tprint("Expected % to have a lower_snake_case name", root_expression.kind);
-                    report_cloudnc_error(root_expression, reason);
+                    report_coding_style_error(root_expression, reason);
                 }
             case .IDENT;
                 style_check_identifier(xx root_expression);
@@ -67,7 +67,7 @@ style_check_identifier :: (ident : *Code_Ident)
         case .PROCEDURE;
             if !is_lower_snake_case(ident.name) {
                 reason := tprint("Expected % to have a lower_snake_case name", type_info_tag);
-                report_cloudnc_error(ident, reason);
+                report_coding_style_error(ident, reason);
             }
 
         case .STRUCT; #through;
@@ -75,7 +75,7 @@ style_check_identifier :: (ident : *Code_Ident)
         case .TYPE;
             if !is_upper_snake_case(ident.name) {
                 reason := tprint("Expected % to have a Upper_Snake_Case name", type_info_tag);
-                report_cloudnc_error(ident, reason);
+                report_coding_style_error(ident, reason);
             }
 
         case .VOID;
@@ -91,7 +91,7 @@ style_check_identifier :: (ident : *Code_Ident)
 style_check_return :: (node : *Code_Return) {
     for arg : node.arguments_unsorted {
         if arg.expression.kind == .PROCEDURE_CALL {
-            report_cloudnc_error(node, "Procedure calls in returns are not allowed");
+            report_coding_style_error(node, "Procedure calls in returns are not allowed");
         }
     }
 }
@@ -115,7 +115,7 @@ style_check_if_condition :: (node : *Code_Node)
         case .LITERAL;
             literal := cast(*Code_Literal) node;
             if literal.value_type == .STRING {
-                report_cloudnc_error(node, "Using string literals in an if condition is disallowed");
+                report_coding_style_error(node, "Using string literals in an if condition is disallowed");
             }
 
         case .UNARY_OPERATOR;
@@ -125,7 +125,7 @@ style_check_if_condition :: (node : *Code_Node)
             if token == xx #char "!" {
                 if_condition_unary_negation_operator_count += 1;
                 if if_condition_unary_negation_operator_count > 1 {
-                    report_cloudnc_error(node, "Using more than one negation operator is disallowed");
+                    report_coding_style_error(node, "Using more than one negation operator is disallowed");
                 }
             }
 
@@ -137,7 +137,7 @@ style_check_if_condition :: (node : *Code_Node)
             if_condition_binary_operator_count += 1;
             if if_condition_binary_operator_count >= 4 {
                 // This restriction is a probably not a good idea...
-                report_cloudnc_error(node, "Exceeded maximum binary operator count (3) in if condition");
+                report_coding_style_error(node, "Exceeded maximum binary operator count (3) in if condition");
             }
 
             // Reset negation counter before checking subexpression
@@ -149,11 +149,11 @@ style_check_if_condition :: (node : *Code_Node)
             style_check_if_condition(op.right);
 
         case .PROCEDURE_CALL;
-            report_cloudnc_error(node, "Procedure calls in if conditions are disallowed, use a local variable");
+            report_coding_style_error(node, "Procedure calls in if conditions are disallowed, use a local variable");
     }
 }
 
-report_cloudnc_error :: (node: *Code_Node, description: string) {
+report_coding_style_error :: (node: *Code_Node, description: string) {
     error := sprint("\n*** CloudNC coding style violation (%) ***", description);
     defer free(error.data);
     compiler_report(error, make_location(node), .ERROR_CONTINUABLE);
