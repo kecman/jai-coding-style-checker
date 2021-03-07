@@ -23,16 +23,16 @@ Output with style violations (compilation fails and all violations get reported)
 matija@chip:~/dev/jai-coding-standards-demo (master)$ jai-linux build.jai
 
 In workspace #2 ("Target Program"):
-/home/matija/dev/jai-coding-standards-demo/main.jai:25,26: Error:
+/home/matija/dev/jai-coding-standards-demo/main.jai:24,26: Error:
 *** Coding style violation (Expected PROCEDURE_HEADER to have a lower_snake_case name) ***
 
-    // bad_Function_Name :: () {}
-    bad_fuCction_name :: () {}
+    //
+    bad_Function_Name :: () {}
 
 /home/matija/dev/jai-coding-standards-demo/main.jai:27,8: Error:
 *** Coding style violation (Using string literals in an if condition is disallowed) ***
 
-    bad_fuCction_name :: () {}
+    // bad_fuCction_name :: () {}
     // bad_function_call :: () -> bool { return truth(); }
     if "hello" {}
 
@@ -54,12 +54,12 @@ Running linker: /home/matija/Dropbox/jai//bin/lld-linux -flavor Gnu --eh-frame-h
 
 Stats for Workspace 3, 'Target Program':
 Lexer lines processed: 6147 (8089 including blank lines, comments.)
-Front-end time: 0.691517 seconds.
-llvm      time: 0.088279 seconds.
+Front-end time: 0.686678 seconds.
+llvm      time: 0.091528 seconds.
 
-Compiler  time: 0.779796 seconds.
-Link      time: 0.002718 seconds.
-Total     time: 0.782514 seconds.
+Compiler  time: 0.778206 seconds.
+Link      time: 0.002768 seconds.
+Total     time: 0.780974 seconds.
 Coding style checking... FAILED with 4 errors
 Error: Compilation terminated.
 ```
