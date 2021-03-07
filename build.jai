@@ -42,7 +42,7 @@ build :: () {
 
 num_errors_found := 0;
 
-#load "coding_standards.jai";
+#load "coding_style.jai";
 #import "Basic";
 #import "Compiler";
 #import "String";
