@@ -1,5 +1,3 @@
-#import "Program_Print";
-
 build :: () {
     // Create a workspace for the target program.
     w := compiler_create_workspace("Target Program");
