@@ -18,7 +18,7 @@ build :: () {
             message := compiler_wait_for_message();
             if !message break;
 
-            cloudnc_style_checks(message);
+            run_coding_style_checks(message);
 
             if message.kind == .COMPLETE  break;
         }
@@ -27,7 +27,7 @@ build :: () {
     }
 
     if num_errors_found {
-        print_color("%\n", "CloudNC coding standards checking... FAILED", color=FOREGROUND_RED);
+        print_color("% %\n", "CloudNC coding standards checking... FAILED", tprint("with % errors", num_errors_found), color=FOREGROUND_RED);
         compiler_report("", 0, 0, "Compilation terminated.\n");
     } else {
         print_color("%\n", "CloudNC coding standards checking... PASSED", color=FOREGROUND_GREEN);

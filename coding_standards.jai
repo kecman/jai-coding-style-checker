@@ -1,4 +1,4 @@
-cloudnc_style_checks :: (message: *Message) {
+run_coding_style_checks :: (message: *Message) {
     if message.kind != .TYPECHECKED return;
 
     code := cast(*Message_Typechecked) message;
@@ -8,7 +8,10 @@ cloudnc_style_checks :: (message: *Message) {
 
         for decl.expressions {
             if it.kind == .IF {
-                style_check_if(xx it);
+                if_condition_binary_operator_count = 0;
+                if_condition_unary_negation_operator_count = 0;
+                if_ := cast(*Code_If) it;
+                style_check_if_condition(if_.condition);
             }
 
             if it.kind == .RETURN {
@@ -100,31 +103,19 @@ style_check_return :: (node : *Code_Return) {
 if_condition_binary_operator_count := 0;
 if_condition_unary_negation_operator_count := 0;
 
-style_check_if :: (node : *Code_If) {
-    if_condition_binary_operator_count = 0;
-    if_condition_unary_negation_operator_count = 0;
-    reason, error := style_check_if_condition(node.condition);
-    if reason != "" {
-         report_cloudnc_error(xx node, reason);
-    }
-}
-
-style_check_if_condition :: (node : *Code_Node) -> (reason : string, error_node : *Code_Node)
+style_check_if_condition :: (node : *Code_Node)
 {
     if node.kind ==
     {
         case .CAST;
             // We get a cast node in cases like `if 42 {}` and `if "hi" {}`
             cast_ := cast(*Code_Cast) node;
-            reason, error := style_check_if_condition(cast_.expression);
-            if reason != "" {
-                return reason, error;
-            }
+            style_check_if_condition(cast_.expression);
 
         case .LITERAL;
             literal := cast(*Code_Literal) node;
             if literal.value_type == .STRING {
-                return "Using string literals in an if condition is disallowed", node;
+                report_cloudnc_error(node, "Using string literals in an if condition is disallowed");
             }
 
         case .UNARY_OPERATOR;
@@ -134,14 +125,11 @@ style_check_if_condition :: (node : *Code_Node) -> (reason : string, error_node 
             if token == xx #char "!" {
                 if_condition_unary_negation_operator_count += 1;
                 if if_condition_unary_negation_operator_count > 1 {
-                    return "Why are you using more than one negation in an if condition??", node;
+                    report_cloudnc_error(node, "Using more than one negation operator is disallowed");
                 }
             }
 
-            reason, error := style_check_if_condition(op.subexpression);
-            if reason != "" {
-                return reason, error;
-            }
+            style_check_if_condition(op.subexpression);
 
         case .BINARY_OPERATOR;
             op := cast(*Code_Binary_Operator) node;
@@ -149,29 +137,20 @@ style_check_if_condition :: (node : *Code_Node) -> (reason : string, error_node 
             if_condition_binary_operator_count += 1;
             if if_condition_binary_operator_count >= 4 {
                 // This restriction is a probably not a good idea...
-                return "Exceeded maximum binary operator count (3) in if condition", node;
+                report_cloudnc_error(node, "Exceeded maximum binary operator count (3) in if condition");
             }
 
-            if_condition_unary_negation_operator_count = 0; // Reset negation counter before checking subexpression
-            lhs_reason, lhs_error := style_check_if_condition(op.left);
-            if lhs_reason != "" {
-                return lhs_reason, lhs_error;
-            }
+            // Reset negation counter before checking subexpression
+            if_condition_unary_negation_operator_count = 0;
+            style_check_if_condition(op.left);
 
-            if_condition_unary_negation_operator_count = 0; // Reset negation counter before checking subexpression
-            rhs_reason, rhs_error := style_check_if_condition(op.right);
-            if rhs_reason != "" {
-                return rhs_reason, rhs_error;
-            }
+            // Reset negation counter before checking subexpression
+            if_condition_unary_negation_operator_count = 0;
+            style_check_if_condition(op.right);
 
         case .PROCEDURE_CALL;
-            return "Procedure calls are not allowed in if conditions, use a local variable", node;
-
-        case .IDENT;
-            // Identifier styles are checked when declarations are checked
+            report_cloudnc_error(node, "Procedure calls in if conditions are disallowed, use a local variable");
     }
-
-    return "", null;
 }
 
 report_cloudnc_error :: (node: *Code_Node, description: string) {
