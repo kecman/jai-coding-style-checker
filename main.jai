@@ -31,9 +31,9 @@ main :: () {
     if true != true || true == true && truth() {}
 
     //
-    // @Incomplete errors not caught
+    // @Incomplete These violations are not detected
     //
 
-    A_Variable := 42; // Should be lower_snake_case
-    a_constant :: 42; // Should be ALLCAPS_SNAKE_CASE
+    // A_Variable := 42; // Should be lower_snake_case
+    // a_constant :: 42; // Should be ALLCAPS_SNAKE_CASE
 }

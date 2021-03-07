@@ -154,7 +154,7 @@ style_check_if_condition :: (node : *Code_Node)
 }
 
 report_coding_style_error :: (node: *Code_Node, description: string) {
-    error := sprint("\n*** CloudNC coding style violation (%) ***", description);
+    error := sprint("\n*** Coding style violation (%) ***", description);
     defer free(error.data);
     compiler_report(error, make_location(node), .ERROR_CONTINUABLE);
     num_errors_found += 1;

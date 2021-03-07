@@ -27,10 +27,10 @@ build :: () {
     }
 
     if num_errors_found {
-        print_color("% %\n", "CloudNC coding standards checking... FAILED", tprint("with % errors", num_errors_found), color=FOREGROUND_RED);
+        print_color("% %\n", "Coding style checking... FAILED", tprint("with % errors", num_errors_found), color=FOREGROUND_RED);
         compiler_report("", 0, 0, "Compilation terminated.\n");
     } else {
-        print_color("%\n", "CloudNC coding standards checking... PASSED", color=FOREGROUND_GREEN);
+        print_color("%\n", "Coding style checking... PASSED", color=FOREGROUND_GREEN);
     }
 
     options := get_build_options();
