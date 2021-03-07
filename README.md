@@ -1,6 +1,6 @@
-A hackday demo to demonstrate how it would be possible to enforce in-house custom coding standards of the kind that we discussed on this slack thread: https://cloudnc.slack.com/archives/G6S2H6ALR/p1614858248146800
+A Jai meta-program that reports violations of in-house coding standards.
 
-You, uh, need Jai but if you _have_ it here is some demo output when none of the coding standards are violated:
+Output when there are no style violations
 
 ```
 matija@chip:~/dev/jai-coding-standards-demo (master)$ jai-linux build.jai 
@@ -17,7 +17,7 @@ Total     time: 0.763757 seconds.
 CloudNC coding standards checking... PASSED
 ```
 
-And if you were to uncomment some of the code blocks the contain coding standard violations compilation fails (it could be made to just warn instead) and all  errors get reported:
+Output with style violations (compilation fails and all violations get reported):
 
 ```
 matija@chip:~/dev/jai-coding-standards-demo (master)$ jai-linux build.jai 
@@ -60,6 +60,6 @@ llvm      time: 0.091416 seconds.
 Compiler  time: 0.795964 seconds.
 Link      time: 0.002798 seconds.
 Total     time: 0.798762 seconds.
-CloudNC coding standards checking... FAILED
+CloudNC coding standards checking... FAILED with 4 errors
 Error: Compilation terminated.
 ```
